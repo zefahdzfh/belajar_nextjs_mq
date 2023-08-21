@@ -1,48 +1,87 @@
+"use client";
 import Button from "./component/button";
 import InputText from "./component/inputText";
-import Latihan from "./component/latihan";
+import Label from "./component/label";
 import Note from "./component/note";
-function Home() {
+import { useState } from "react";
+
+type Identitas = {
+  nama: string;
+  sekolah: string;
+  umur: number | null;
+  alamat?:string;
+};
+
+
+const Home = () => {
+  let [message, setMessage] = useState("hello"); // jika string, dengan data awal "hai"
+  let [count, setCount] = useState(0);
+  let [isLogin,setIsLogin] = useState(false);
+  let [profile, setProfile] = useState<Identitas>({
+    nama:"Zefa",
+    sekolah:"smk mq",
+    umur:16
+  }) //object
+
   return (
-    <>
-      <h1>Hello World</h1>
+    <main className="space-y-5">
+      <h1 className="text-red-500 font-bold text-2xl">{isLogin? "sudah login":"belum login"}</h1>
+      <Button
+        title="Logout"
+        colorSchema="red"
+        variant="solid"
+        onClick={() => {
+          setIsLogin(false);
+        }}
+      ></Button>
+      <Button
+        title="Login"
+        colorSchema="blue"
+        variant="solid"
+        onClick={() => {
+          setIsLogin(true);
+        }}
+      ></Button>
 
+      <h1 className="text-red-500 font-bold text-2xl">{count}</h1>
+      <Button
+        title="Tambah"
+        colorSchema="red"
+        variant="solid"
+        onClick={() => {
+          setCount((prevCount) => prevCount + 1);
+        }}
+      ></Button>
+      <Button
+        isDisabled={count === 0 ? true : false}
+        title="kurang"
+        colorSchema="blue"
+        variant="solid"
+        onClick={() => {
+          setCount((prevCount) => prevCount - 1);
+        }}
+      ></Button>
+
+<h1 className="text-red-500 font-bold text-2xl">{message}</h1>
+      <Button
+        title="Zefa"
+        colorSchema="red"
+        variant="solid"
+        onClick={() => {
+          setMessage('Hello Zefa');
+        }}
+      ></Button>
+      <Button
+        title="Hilmi"
+        colorSchema="blue"
+        variant="solid"
+        onClick={() => {
+          setMessage('Hello Hilmi');
+        }}
+      ></Button>
       
-      <Latihan name="izan" age={18} username="izan" isVerified />
-      <Latihan name="zaky" age={15} username="zaky" isVerified={false} />
-
-      <Button title="save" isDisabled />
-      <Button title="cancel" />
-      
-
-      <Note title=" Belajar NextJS" status="success">
-        <div className="">Sedang belajar NextJS</div>
-      </Note>
-
-     <Note title=" Belajar NextJS" status="success">
-     <Button title="cancel"/>
-     <Latihan name="zefa" age={15} username="zefa" isVerified={true} />
-     </Note>
-
-     <Note title=" Belajar NextJS" status="warning">
-      ok
-     </Note>
-
-     <Note title="latihan" status="success">
-        <div className="">
-          <h5>latihan</h5>
-        </div>
-     </Note>
-
-
-     <input name="username" type="text" value={'ok'} />
-     <InputText isError value={'123'} type="password"></InputText>
-     <InputText isError={true} value={'tes'} placeholder="username" type="text"></InputText>
-     <InputText value={237372897398}></InputText>
-
-
-    </>
+    </main>
   );
-}
+};
 
 export default Home;
