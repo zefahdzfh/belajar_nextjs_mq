@@ -5,11 +5,12 @@ interface ButtonProps {
   title: string;
   isDisabled?: boolean;
   variant? : Variant,
-  colorSchema : ColorSchema
+  colorSchema : ColorSchema,
+  width ?: string
     
   }
   
-  const Button: React.FC<ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ title, isDisabled = false,variant,colorSchema, ...props }) => {
+  const Button: React.FC<ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ title, isDisabled = false,variant,colorSchema,width, ...props }) => {
     return (
       
       <button
@@ -20,6 +21,7 @@ interface ButtonProps {
         'bg-yellow-500': variant === 'outline' && colorSchema ==='yellow',
         'bg-red-500 text-white':variant === 'solid' && colorSchema === 'red',
         'opacity-50': isDisabled === true,
+        "w-full": width ==="full",
       })}
       {...props}
       >
