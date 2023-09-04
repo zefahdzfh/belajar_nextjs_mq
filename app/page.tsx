@@ -5,6 +5,8 @@ import InputText from "./component/inputText";
 import Label from "./component/label";
 import Note from "./component/note";
 import { useState, useEffect } from "react";
+import Tambah from "./tambah";
+import Kurang from "./kurang";
 
 type Identitas = {
   nama: string;
@@ -357,9 +359,15 @@ const Home = () => {
 // export default Home;
 
 const App = () => {
-  let [count,setCount]= useState()
+  let [count,setCount]= useState(0)
   return(
     <>
+      <h1 className="text-lg">{count}</h1>
+      <section>
+        <Tambah count={count} setCount={setCount} />
+        <Kurang count={count} setCount={setCount} />
+        
+      </section>
     </>
   )
 }
