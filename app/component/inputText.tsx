@@ -3,9 +3,9 @@ import clsx from "clsx";
 interface InputProps {
   isError?: boolean;
   messageError?: string;
-  value: number | string;
-  id: number | string;
-  name: number | string;
+  value?: number | string;
+  id?: number | string;
+  name?: number | string;
 }
 
 const InputText: React.FC<

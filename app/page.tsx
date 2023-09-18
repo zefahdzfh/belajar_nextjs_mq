@@ -26,193 +26,193 @@ type Nilai = {
   nilai: 70 | 80 | 90 | 100 | "";
 };
 
-const Home = () => {
-  const [nilai, setNilai] = useState<Nilai[]>([
-    {
-      id: 1,
-      mapel: "Kejuruan",
-      nilai: 80,
-    },
-  ]);
+// const Home = () => {
+//   const [nilai, setNilai] = useState<Nilai[]>([
+//     {
+//       id: 1,
+//       mapel: "Kejuruan",
+//       nilai: 80,
+//     },
+//   ]);
 
-  const [data, setData] = useState<Nilai>({
-    mapel: "",
-    nilai: "",
-  });
+//   const [data, setData] = useState<Nilai>({
+//     mapel: "",
+//     nilai: "",
+//   });
 
-  const [btnSave, setBtnSave] = useState(true);
+//   const [btnSave, setBtnSave] = useState(true);
 
-  const [count, setCount] = useState(1);
-  const getLastIndex = () => {
-    setCount((prev) => prev + 1);
-    return count + 1;
-  };
+//   const [count, setCount] = useState(1);
+//   const getLastIndex = () => {
+//     setCount((prev) => prev + 1);
+//     return count + 1;
+//   };
 
-  useEffect(() => {
-    if (data.mapel != "" && data.nilai != "") {
-      setBtnSave(false);
-    }
-  }, [data]);
+//   useEffect(() => {
+//     if (data.mapel != "" && data.nilai != "") {
+//       setBtnSave(false);
+//     }
+//   }, [data]);
 
-  return (
-    <main>
-      {/* {JSON.stringify(data)} */}
-      <section className="p-2">
-        {nilai.map((n, i) => (
-          <div key={i} className="p-2 border-2 rounded shadow-md leading-relaxed">
-            <h1>id: {n.id}</h1>
-            <h1>Mata Pelajaran: {n.mapel}</h1>
-            <h1>Nilai: {n.nilai}</h1>
-            <Button 
-            isDisabled={nilai.length<=1}
-            disabled
-              colorSchema='red'
-              variant="solid"
-              title='Delete'
-              onClick={() => {
-                setNilai((prev) => {
-                  prev.pop();
-                  return[...prev]
-                })
-                console.log(n.id);
-              }}
-            />
-          </div>
-        ))}
-      </section>
+//   return (
+//     <main>
+//       {/* {JSON.stringify(data)} */}
+//       <section className="p-2">
+//         {nilai.map((n, i) => (
+//           <div key={i} className="p-2 border-2 rounded shadow-md leading-relaxed">
+//             <h1>id: {n.id}</h1>
+//             <h1>Mata Pelajaran: {n.mapel}</h1>
+//             <h1>Nilai: {n.nilai}</h1>
+//             <Button 
+//             isDisabled={nilai.length<=1}
+//             disabled
+//               colorSchema='red'
+//               variant="solid"
+//               title='Delete'
+//               onClick={() => {
+//                 setNilai((prev) => {
+//                   prev.pop();
+//                   return[...prev]
+//                 })
+//                 console.log(n.id);
+//               }}
+//             />
+//           </div>
+//         ))}
+//       </section>
 
-      <section className="pl-2 py-5">
-        <Button
-          title="Kejuruan"
-          colorSchema="blue"
-          variant="solid"
-          isDisabled={data.mapel === "Kejuruan"}
-          onClick={() => {
-            setData((prev) => {
-              return {
-                ...prev,
-                mapel: "Kejuruan",
-              };
-            });
-          }}
-        />
-        <Button
-          title="Agama"
-          colorSchema="blue"
-          isDisabled={data.mapel === "Agama"}
-          variant="outline"
-          onClick={() => {
-            setData((prev) => {
-              return {
-                ...prev,
-                mapel: "Agama",
-              };
-            });
-          }}
-        ></Button>
-        <Button
-          title="Umum"
-          colorSchema="blue"
-          variant="solid"
-          isDisabled={data.mapel === "Umum"}
-          onClick={() => {
-            setData((prev) => {
-              return {
-                ...prev,
-                mapel: "Umum",
-              };
-            });
-          }}
-        />
-      </section>
+//       <section className="pl-2 py-5">
+//         <Button
+//           title="Kejuruan"
+//           colorSchema="blue"
+//           variant="solid"
+//           isDisabled={data.mapel === "Kejuruan"}
+//           onClick={() => {
+//             setData((prev) => {
+//               return {
+//                 ...prev,
+//                 mapel: "Kejuruan",
+//               };
+//             });
+//           }}
+//         />
+//         <Button
+//           title="Agama"
+//           colorSchema="blue"
+//           isDisabled={data.mapel === "Agama"}
+//           variant="outline"
+//           onClick={() => {
+//             setData((prev) => {
+//               return {
+//                 ...prev,
+//                 mapel: "Agama",
+//               };
+//             });
+//           }}
+//         ></Button>
+//         <Button
+//           title="Umum"
+//           colorSchema="blue"
+//           variant="solid"
+//           isDisabled={data.mapel === "Umum"}
+//           onClick={() => {
+//             setData((prev) => {
+//               return {
+//                 ...prev,
+//                 mapel: "Umum",
+//               };
+//             });
+//           }}
+//         />
+//       </section>
 
-      <section className="pl-2 py-5">
-        <Button
-          title="70"
-          colorSchema="green"
-          variant="outline"
-          isDisabled={data.nilai === 70}
-          onClick={() => {
-            setData((prev) => {
-              return {
-                ...prev,
-                nilai: 70,
-              };
-            });
-          }}
-        />
-        <Button
-          title="80"
-          colorSchema="green"
-          variant="outline"
-          isDisabled={data.nilai === 80}
-          onClick={() => {
-            setData((prev) => {
-              return {
-                ...prev,
-                nilai: 80,
-              };
-            });
-          }}
-        />
-        <Button
-          title="90"
-          colorSchema="green"
-          variant="outline"
-          isDisabled={data.nilai === 90}
-          onClick={() => {
-            setData((prev) => {
-              return {
-                ...prev,
-                nilai: 90,
-              };
-            });
-          }}
-        />
-        <Button
-          title="100"
-          colorSchema="green"
-          variant="outline"
-          isDisabled={data.nilai === 100}
-          onClick={() => {
-            setData((prev) => {
-              return {
-                ...prev,
-                nilai: 100,
-              };
-            });
-          }}
-        />
-      </section>
-      <section className="pl-2 py-5">
-          <Button 
-          title="Simpan"
-          colorSchema="green"
-          variant="solid"
-          isDisabled={btnSave}
-          disabled={btnSave}
-          onClick={()=>{
-            setNilai((prev)=>[
-              ...prev,
-              {
-                id:getLastIndex(),
-                mapel:data.mapel,
-                nilai:data.nilai
-              }
-            ])
-            setData((prev)=>{
-              return{
-                ...prev,
-                mapel:'',
-                nilai:''
-              }
-            })
-            setBtnSave(true)
-          }}
-           />
-      </section>
-    </main>
-  );
+//       <section className="pl-2 py-5">
+//         <Button
+//           title="70"
+//           colorSchema="green"
+//           variant="outline"
+//           isDisabled={data.nilai === 70}
+//           onClick={() => {
+//             setData((prev) => {
+//               return {
+//                 ...prev,
+//                 nilai: 70,
+//               };
+//             });
+//           }}
+//         />
+//         <Button
+//           title="80"
+//           colorSchema="green"
+//           variant="outline"
+//           isDisabled={data.nilai === 80}
+//           onClick={() => {
+//             setData((prev) => {
+//               return {
+//                 ...prev,
+//                 nilai: 80,
+//               };
+//             });
+//           }}
+//         />
+//         <Button
+//           title="90"
+//           colorSchema="green"
+//           variant="outline"
+//           isDisabled={data.nilai === 90}
+//           onClick={() => {
+//             setData((prev) => {
+//               return {
+//                 ...prev,
+//                 nilai: 90,
+//               };
+//             });
+//           }}
+//         />
+//         <Button
+//           title="100"
+//           colorSchema="green"
+//           variant="outline"
+//           isDisabled={data.nilai === 100}
+//           onClick={() => {
+//             setData((prev) => {
+//               return {
+//                 ...prev,
+//                 nilai: 100,
+//               };
+//             });
+//           }}
+//         />
+//       </section>
+//       <section className="pl-2 py-5">
+//           <Button 
+//           title="Simpan"
+//           colorSchema="green"
+//           variant="solid"
+//           isDisabled={btnSave}
+//           disabled={btnSave}
+//           onClick={()=>{
+//             setNilai((prev)=>[
+//               ...prev,
+//               {
+//                 id:getLastIndex(),
+//                 mapel:data.mapel,
+//                 nilai:data.nilai
+//               }
+//             ])
+//             setData((prev)=>{
+//               return{
+//                 ...prev,
+//                 mapel:'',
+//                 nilai:''
+//               }
+//             })
+//             setBtnSave(true)
+//           }}
+//            />
+//       </section>
+//     </main>
+//   );
 
   // let [message, setMessage] = useState("hello"); // jika string, dengan data awal "hai"
   // let [count, setCount] = useState(0);
@@ -354,21 +354,64 @@ const Home = () => {
   //     ></Button>
   //   </main>
   // );
-};
+// };
 
 // export default Home;
 
-const App = () => {
-  let [count,setCount]= useState(0)
-  return(
-    <>
-      <h1 className="text-lg">{count}</h1>
-      <section>
-        <Tambah count={count} setCount={setCount} />
-        <Kurang count={count} setCount={setCount} />
+// const App = () => {
+//   let [count,setCount]= useState(0)
+//   return(
+//     <>
+//       <h1 className="text-lg">{count}</h1>
+//       <section>
+//         <Tambah count={count} setCount={setCount} />
+//         <Kurang count={count} setCount={setCount} />
         
-      </section>
-    </>
-  )
-}
-export default App
+//       </section>
+//     </>
+//   )
+// }
+// export default App
+
+const Home = () => {
+  let [message, setMessage] = useState("hai"); // jika string, dengan data awal "hai"
+  let [count, setCount] = useState(0); // jika number , dengan data awal 0
+
+  const increment = () => {
+    setCount((c) => c + 1);
+  };
+
+  const decrement = () => {
+    setCount((c) => c - 1);
+  };
+
+  return (
+    <main className="space-y-5">
+      <h1>Hello World</h1>
+      <p>message addalah {message}</p>{" "}
+      <Button
+        title="Hello"
+        variant="solid"
+        colorSchema="blue"
+        onClick={() => {
+          setMessage("Hello");
+        }}
+      />
+      <div>{count}</div>
+      <Button
+        title="Tambah"
+        variant="solid"
+        colorSchema="blue"
+        onClick={increment}
+      />
+      <Button
+        title="Kurang"
+        variant="solid"
+        colorSchema="red"
+        onClick={decrement}
+      />
+    </main>
+  );
+};
+
+export default Home;
