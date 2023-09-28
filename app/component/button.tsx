@@ -1,6 +1,6 @@
 import clsx from "clsx";
 type Variant = 'solid' | 'outline'
-type ColorSchema = 'blue' | 'red' | 'green' | 'yellow'
+type ColorSchema = 'blue' | 'red' | 'green' | 'yellow' | 'gray'
 interface ButtonProps {
   title: string;
   isDisabled?: boolean;
@@ -21,6 +21,7 @@ interface ButtonProps {
         'text-white bg-green-500': variant === 'solid' && colorSchema ==='green',
         'bg-yellow-500': variant === 'outline' && colorSchema ==='yellow',
         'bg-red-500 text-white':variant === 'solid' && colorSchema === 'red',
+        'bg-gray-500 text-white':variant === 'solid' && colorSchema === 'gray',
         'opacity-50': isDisabled === true,
         "w-full": width ==="full",
       })}
