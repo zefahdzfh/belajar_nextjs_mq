@@ -1,6 +1,6 @@
 import clsx from "clsx";
 type Variant = 'solid' | 'outline'
-type ColorSchema = 'blue' | 'red' | 'green' | 'yellow' | 'gray'
+type ColorSchema = 'blue' | 'red' | 'green' | 'yellow' | 'Gray' | 'Red' | 'Blue' |'RedLong' | 'Yellow' | 'BlueLong'
 interface ButtonProps {
   title: string;
   isDisabled?: boolean;
@@ -21,7 +21,14 @@ interface ButtonProps {
         'text-white bg-green-500': variant === 'solid' && colorSchema ==='green',
         'bg-yellow-500': variant === 'outline' && colorSchema ==='yellow',
         'bg-red-500 text-white':variant === 'solid' && colorSchema === 'red',
-        'bg-gray-500 text-white':variant === 'solid' && colorSchema === 'gray',
+
+        'bg-gray-500 text-white hover:bg-slate-200 w-32 h-16':variant === 'solid' && colorSchema === 'Gray',
+        'bg-red-500 text-white hover:bg-slate-200 w-32 h-16':variant === 'solid' && colorSchema === 'Red',
+        'bg-blue-500 text-white hover:bg-slate-200 w-32 h-16':variant === 'solid' && colorSchema === 'Blue',
+        'bg-yellow-500 text-white hover:bg-slate-200 w-32 h-16':variant === 'solid' && colorSchema === 'Yellow',
+        'bg-blue-500 text-white hover:bg-slate-200 w-full h-16':variant === 'solid' && colorSchema === 'BlueLong',
+        'bg-red-500 text-white hover:bg-slate-200 w-32 h-full':variant === 'solid' && colorSchema === 'RedLong',
+        
         'opacity-50': isDisabled === true,
         "w-full": width ==="full",
       })}
