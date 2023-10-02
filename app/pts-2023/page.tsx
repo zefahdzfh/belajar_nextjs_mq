@@ -68,6 +68,12 @@ const Pts2023 = () => {
             setPreviewAnswer('Error');
           }
         }
+        if (title === ',') {
+          // Jika koma ditekan, tambahkan koma ke tampilan
+          setDisplayedNumber(displayedNumber + '.'); // Gunakan titik karena JavaScript menggunakan titik untuk representasi desimal
+          setPreviewAnswer(null);
+        }
+      
       
         // Hapus preview number jika displayed number kosong
         if (displayedNumber === '') {
@@ -83,11 +89,11 @@ const Pts2023 = () => {
                     <p className="text-base font-semibold text-white">Calculator by <span className="italic">Next JS</span> </p>
                     <p className="text-sm text-white">Hudzaifah Ibnu Puase</p>
                 </div>
-                <div className="mt-5 w-full bg-white h-[120px] rounded-lg">
+                <div className="mt-5 w-full bg-gray-600 h-[120px] rounded-lg">
                     <div className="p-5 flex justify-between">
-                        <span className="text-2xl">{displayedNumber}</span>
+                        <span className="text-2xl text-white">{displayedNumber}</span>
                         <div className="mt-10">
-                        {previewAnswer !== null && <span className="text-4xl font-semibold">{previewAnswer}</span>}
+                        {previewAnswer !== null && <span className="text-4xl font-semibold text-white">{previewAnswer}</span>}
                         </div>
                         
                     </div>
@@ -115,7 +121,7 @@ const Pts2023 = () => {
                     <div className="flex text-xl justify-center my-1"> <Button colorSchema="Blue" variant="solid" title="X" onClick={() => handleButtonClick('X')}/> </div>
                     <div className="flex text-xl justify-center my-1"> <Button colorSchema="Blue" variant="solid" title="/" onClick={() => handleButtonClick('/')}/> </div>
 
-                    <div className="flex text-xl justify-center my-1"> <Button colorSchema="Yellow" variant="solid" title=","/> </div>
+                    <div className="flex text-xl justify-center my-1"> <Button colorSchema="Yellow" variant="solid" title="," onClick={() => handleButtonClick(',')} /> </div>
                     <div className="flex text-xl justify-center my-1 col-span-2"> <Button colorSchema="BlueLong" variant="solid" title="=" onClick={() => handleButtonClick('=')}/> </div>
                 </div>
 
