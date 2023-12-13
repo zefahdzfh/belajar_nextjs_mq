@@ -5,37 +5,161 @@ import { useQuery } from "@tanstack/react-query";
 import { BookListResponse } from "./interface";
 import { axiosClient } from "@/lib/axiosClient";
 import { dateUtil } from "@/utils";
+import useBookModule from "./lib";
+import { useMemo ,useState } from "react";
+import { Drawer } from "@/components/Drawer";
+import { useClosure } from "@/hook";
+import { useConfirmDeleteBulk } from "@/hook/useConfirmBulkDelete";
+import { useConfirmDelete } from "@/hook/useConfirmDelete";
+import Button from "@/components/Button";
+import Filter from "./module/filter";
+import { BookListFilter } from "./interface";
+import { useRouter } from "next/navigation";
+import { DeleteButton, EditButton } from "@/components/ButtonAction";
+import Swal from "sweetalert2";
 
 const Book = () => {
-  const getBookList = async (): Promise<BookListResponse> => {
-    return axiosClient.get("book/list").then((res) => {
-      console.log("res", res);
-      return res.data;
+  const { useBookList, useDeleteBook,useDeleteBulkBook } = useBookModule();
+  const [deletePayload, setDeletePayload] = useState<number[]>([]);
+  const { mutate, isLoading } = useDeleteBook();
+  const { mutate: mutateDeleteBulk, isLoading: isLoadingDeleteBulk } =
+    useDeleteBulkBook();
+  const router = useRouter();
+  const handleDeleteBulk = useConfirmDeleteBulk({
+    onSubmit: (payload) => {
+      console.log("payload", payload);
+      mutateDeleteBulk({ data: payload }, {
+        onSuccess : ()=> {
+          setDeletePayload([])
+        }
+      });
+    },
+  });
+  const handleDelete = (id: number) => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: true,
     });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Apakah Yakin?",
+        text: "Data yang terhapus tidak bisa dikembalikan",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Hapus",
+        confirmButtonColor: "red",
+
+        cancelButtonText: "Batal",
+        reverseButtons: true,
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          await mutate(id);
+        }
+      });
   };
+  const { onOpen, isOpen, onClose } = useClosure();
+  const {
+    data,
+    isFetching,
+    params,
+    setParams,
+    handlePage,
+    handlePageSize,
+    handleClear,
+    handleFilter,
+  } = useBookList();
 
-  const { data, isFetching, isLoading } = useQuery(
-    ["/book/list"],
-    () => getBookList(),
-    {
-      select: (response) => response,
+  const checked = useMemo(() => {
+    if (!data) {
+      return { isAllCheced: false };
     }
-  );
+    const isAllChecked = data.data.every((n) => deletePayload.includes(n.id));
 
+    return { isAllCheced: isAllChecked };
+  }, [deletePayload, data]);
+
+  console.log("params", params);
   console.log("data", data);
   console.log("isFetching", isFetching);
+
   return (
     <>
-      <section className="container px-4 mx-auto">
+      <Drawer
+        isOpen={isOpen}
+        onClose={onClose}
+        onClear={handleClear}
+        onSubmit={handleFilter}
+        title="filter buku"
+      >
+        <Filter params={params} setParams={setParams} />
+      </Drawer>
+      {JSON.stringify(params)}
+      <section className="container px-4 mx-auto mt-10">
+        {isFetching ? "loading..." : ""}
+        <div className="grid grid-cols-6 gap-5">
+          <Button title="Filter" onClick={onOpen} colorSchema="blue" />
+          <Button
+            onClick={() => {
+              router.push("/book/tambah");
+            }}
+            width="sm"
+            colorSchema="red"
+            title="tambah"
+          />
+          <Button
+              width="sm"
+              onClick={() => {
+                handleDeleteBulk(deletePayload);
+              }}
+              isLoading={isLoadingDeleteBulk}
+              colorSchema="red"
+              isDisabled={deletePayload.length === 0}
+              title="Hapus "
+          />
+          <Button
+            onClick={() => {
+              router.push("/book/tambah-bulk");
+            }}
+            width="xl"
+            colorSchema="green"
+            title="tambah bulk"
+          />
+        </div>
         <Table>
           <Thead>
             <Tr>
               <Th scope="col">
                 <div className="flex items-center gap-x-3">
-                  <input
-                    type="checkbox"
-                    className="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
-                  />
+                <input
+                      checked={checked.isAllCheced}
+                      onChange={() => {
+                        if (checked.isAllCheced) {
+                          setDeletePayload([]);
+                        } else {
+                          setDeletePayload((state) => {
+                            if (!data) {
+                              return [];
+                            }
+
+                            const selected: number[] = Array.from(
+                              new Set([
+                                ...state,
+                                ...data?.data?.map((n) => Number(n.id)),
+                              ])
+                            );
+
+                            return [...selected];
+                          });
+                        }
+                      }}
+                      type="checkbox"
+                      className="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
+                    />
                   <button className="flex items-center gap-x-2">
                     <span>No</span>
                     <svg
@@ -70,14 +194,32 @@ const Book = () => {
               <Th scope="col">Penulis</Th>
               <Th scope="col">Tahun</Th>
               <Th scope="col">Tanggal Dibuat</Th>
-              <Th scope="col">
-              Tanggal Diperbaharui
-              </Th>
+              <Th scope="col">Tanggal Diperbaharui</Th>
+              <Th scope="col">Aksi</Th>
             </Tr>
           </Thead>
           <Tbody>
             {data?.data.map((item, index) => (
               <Tr key={index}>
+                <Td>
+                      <input
+                        checked={deletePayload.includes(item.id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setDeletePayload((state) => [...state, item.id]);
+                          } else {
+                            const filtered = deletePayload.filter(
+                              (n) => n !== item.id
+                            );
+                            setDeletePayload(filtered);
+                          }
+                        }}
+                        type="checkbox"
+                        className="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
+                      />
+                    </Td>
+                    <Td>{(params.page - 1) * params.pageSize + index + 1}</Td>
+                    {/* <Td></Td> */}
                 <Td>
                   <span>{item.id}</span>
                 </Td>
@@ -91,15 +233,35 @@ const Book = () => {
                   <span>{item.year}</span>
                 </Td>
                 <Td>
-                  <span>{dateUtil.formatDateTime(item.created_at)}</span>
+                  <span>{dateUtil.formatDateIndLong(item.created_at)}</span>
                 </Td>
                 <Td>
-                <span>{dateUtil.formatDateIndLong(item.updated_at)}</span>
+                  <span>{dateUtil.formatDateTime(item.updated_at)}</span>
+                </Td>
+                <Td>
+                  <DeleteButton
+                    isLoading={isLoading}
+                    onClick={() => {
+                      handleDelete(item.id || 0);
+                    }}
+                  />
+                  <EditButton
+                    onClick={() => {
+                      router.push(`book/${item.id}/edit`);
+                    }}
+                  />
                 </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
+        <Pagination
+          page={params.page}
+          pageSize={params.pageSize}
+          handlePageSize={handlePageSize}
+          handlePage={handlePage}
+          pagination={data?.pagination}
+        />
       </section>
     </>
   );

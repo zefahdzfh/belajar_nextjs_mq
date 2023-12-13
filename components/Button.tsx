@@ -51,12 +51,13 @@ const Button: React.FC<
       {isLoading ? (
         title
       ) : (
-        <ClipLoader
-          color={"#36d7b7"}
-          size={20}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
+        // <ClipLoader
+        //   color={"#36d7b7"}
+        //   size={20}
+        //   aria-label="Loading Spinner"
+        //   data-testid="loader"
+        // />
+        title
       )}
     </button>
   );
