@@ -20,9 +20,11 @@ import { usePagination } from "@/hook/usePagination";
 import CreateBook from "../tambah/page";
 import Swal from "sweetalert2";
 import { id } from "date-fns/locale";
+import { useToast } from "@/hook/useToast";
 
 const useBookModule = () => {
   const queryClient = useQueryClient();
+  const { toastError, toastSuccess, toastWarning } = useToast();
   const defaultParams: BookListFilter = {
     title: "",
     author: "",
@@ -81,22 +83,10 @@ const useBookModule = () => {
       (payload: BookCreatePayload) => createBook(payload),
       {
         onSuccess: (response) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: response.message,
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          toastSuccess(response.message)
         },
         onError: (err) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: "Ada Kesalahan",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          toastError();
         },
       }
     );
@@ -117,22 +107,10 @@ const useBookModule = () => {
       (payload: BookUpdatePayload) => updateBook(payload, id),
       {
         onSuccess: (response) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: response.message,
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          toastSuccess(response.message)
         },
         onError: (err) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "error",
-            title: "Ada Kesalahan",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          toastError();
         },
       }
     );
@@ -163,32 +141,14 @@ const useBookModule = () => {
       },
       {
         onSuccess: (response) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: response.data.message,
-            showConfirmButton: false,
-            timer: 1000,
-          });
+          toastSuccess(response.data.message)
           queryClient.invalidateQueries(["/book/list"]);
         },
         onError: (error: any) => {
           if (error.response.status == 422) {
-            Swal.fire({
-              position: "top",
-              icon: "warning",
-              title: error.response.data.message,
-              showConfirmButton: false,
-              timer: 1000,
-            });
+            toastWarning(error.response.data.message)
           } else {
-            Swal.fire({
-              position: "top",
-              icon: "error",
-              title: "Ada Kesalahan",
-              showConfirmButton: false,
-              timer: 1000,
-            });
+            toastError()
           }
         },
       }
@@ -203,22 +163,10 @@ const useBookModule = () => {
       },
       {
         onSuccess: (response) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: response.data.message,
-            showConfirmButton: false,
-            timer: 1000,
-          });
+         toastSuccess(response.data.message)
         },
         onError: (error) => {
-          Swal.fire({
-            position: "top",
-            icon: "error",
-            title: "Ada Kesalahan",
-            showConfirmButton: false,
-            timer: 1000,
-          });
+          toastError()
         },
       }
     );
@@ -232,24 +180,12 @@ const useBookModule = () => {
       },
       {
         onSuccess: (response) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: response.data.message,
-            showConfirmButton: false,
-            timer: 1000,
-          });
+          toastSuccess(response.data.message)
 
           queryClient.invalidateQueries(["/book/list"]);
         },
         onError: (error) => {
-          Swal.fire({
-            position: "top",
-            icon: "error",
-            title: "Ada Kesalahan",
-            showConfirmButton: false,
-            timer: 1000,
-          });
+          toastError()
         },
       }
     );

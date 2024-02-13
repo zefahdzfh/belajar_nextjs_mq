@@ -217,12 +217,13 @@ const Book = () => {
                         type="checkbox"
                         className="text-blue-500 border-gray-300 rounded dark:bg-gray-900 dark:ring-offset-gray-900 dark:border-gray-700"
                       />
+                      <span className="ml-4">{item.id}</span>
                     </Td>
-                    <Td>{(params.page - 1) * params.pageSize + index + 1}</Td>
-                    {/* <Td></Td> */}
-                <Td>
+                    {/* <Td>{(params.page - 1) * params.pageSize + index + 1}</Td> */}
+                    
+                {/* <Td>
                   <span>{item.id}</span>
-                </Td>
+                </Td> */}
                 <Td>
                   <span>{item.title}</span>
                 </Td>
